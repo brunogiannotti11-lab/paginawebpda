@@ -39,7 +39,8 @@ export async function submitLead(
       status: "success",
       message: `Ficha enviada. Te vamos a escribir a ${parsed.data.email}.`,
     };
-  } catch {
+  } catch (error) {
+    console.error("submitLead", error);
     return {
       status: "error",
       message: "No pudimos guardar la ficha. Probá de nuevo.",

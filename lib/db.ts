@@ -10,7 +10,7 @@ type AppDb = {
   sqlite: Database.Database;
 };
 
-const globalForDb = globalThis as unknown as { sqliteDb?: AppDb };
+const globalForDb = globalThis as unknown as { fichaSqlite?: AppDb };
 
 function dbFile() {
   return process.env.DATABASE_PATH ?? path.join(process.cwd(), "data", "leads.db");
@@ -36,15 +36,19 @@ function createDb() {
 }
 
 export function getDb() {
-  if (!globalForDb.sqliteDb) {
-    globalForDb.sqliteDb = createDb();
+  if (!globalForDb.fichaSqlite?.sqlite) {
+    globalForDb.fichaSqlite = createDb();
   }
-  return globalForDb.sqliteDb.orm;
+  return globalForDb.fichaSqlite.orm;
 }
 
 export function closeDbForTests() {
-  globalForDb.sqliteDb?.sqlite.close();
-  globalForDb.sqliteDb = undefined;
+  try {
+    globalForDb.fichaSqlite?.sqlite.close();
+  } catch {
+    // already closed
+  }
+  globalForDb.fichaSqlite = undefined;
 }
 
 export async function insertLead(input: {
