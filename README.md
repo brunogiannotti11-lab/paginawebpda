@@ -49,4 +49,4 @@ Valores de ejemplo en [`.env.example`](.env.example): usuario `admin`, contrase�
 
 Next.js 16 (App Router), TypeScript, Tailwind CSS 4, shadcn/ui, Drizzle ORM, better-sqlite3, Zod.
 
-Para agentes: leé [AGENTS.md](AGENTS.md). Las skills `frontend-design` y Context7 viven en `.cursor/skills/`.
+Para agentes: leé [AGENTS.md](AGENTS.md) y [DESIGN.md](DESIGN.md). Las skills `frontend-design` y Context7 viven en `.cursor/skills/`.
