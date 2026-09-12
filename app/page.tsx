@@ -1,7 +1,8 @@
+import Image from "next/image";
 import { LeadForm } from "@/components/lead-form";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
-import { PLANS } from "@/lib/plans";
+import { formatARS, PLANS, PRICE_AS_OF } from "@/lib/plans";
 
 export const dynamic = "force-static";
 
@@ -30,7 +31,7 @@ export default function HomePage() {
             aria-hidden
             className="pointer-events-none absolute -right-6 top-8 font-heading text-[28vw] leading-none text-chrome/[0.07] md:top-0 md:text-[18vw]"
           >
-            TRACKER
+            ONIX
           </p>
           <div className="relative grid items-start gap-12 lg:grid-cols-[minmax(0,1fr)_22rem]">
             <div className="max-w-2xl">
@@ -39,7 +40,7 @@ export default function HomePage() {
               </h1>
               <p className="mt-6 max-w-xl text-lg leading-8 text-chrome">
                 Te armamos la ficha del plan Chevrolet que estás mirando. Onix,
-                Tracker, Cruze, Montana, S10 o Spin. Dejás nombre, mail y modelo:
+                Onix Plus, Tracker, Montana o S10. Dejás nombre, mail y modelo:
                 te escribimos con números reales, no con un folleto.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
@@ -73,19 +74,51 @@ export default function HomePage() {
 
         <section id="modelos" className="px-5 py-16 md:px-10 md:py-20">
           <h2 className="text-4xl text-paper md:text-5xl">Los planes que fichamos</h2>
-          <p className="mt-4 max-w-xl text-lg leading-8 text-chrome">
-            No son listas oficiales. Son los modelos que más piden. La cuota la
-            confirma el plan; acá empezás por el auto.
+          <p className="mt-4 max-w-2xl text-lg leading-8 text-chrome">
+            Lista de Plan Chevrolet al {PRICE_AS_OF}. Los precios y la cuota 1
+            son referenciales: los confirma el plan oficial el día que te
+            anotes.
           </p>
           <ul className="mt-10 divide-y divide-chrome/20 border-y border-chrome/20">
-            {PLANS.map((plan) => (
+            {PLANS.map((plan, index) => (
               <li
                 key={plan.id}
-                className="grid gap-2 py-5 md:grid-cols-[8rem_7rem_minmax(0,1fr)] md:items-baseline"
+                className="grid gap-6 py-8 md:grid-cols-[minmax(0,18rem)_minmax(0,1fr)] md:items-center"
               >
-                <p className="font-heading text-3xl text-paper">{plan.name}</p>
-                <p className="text-sm text-lamp">{plan.kind}</p>
-                <p className="text-base leading-7 text-chrome">{plan.line}</p>
+                <div className="relative aspect-[2/1] bg-lacquer">
+                  <Image
+                    src={plan.image}
+                    alt={`${plan.name} ${plan.version}`}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 288px"
+                    priority={index === 0}
+                    className="object-contain p-3"
+                  />
+                </div>
+                <div>
+                  <h3 className="font-heading text-4xl text-paper">{plan.name}</h3>
+                  <p className="mt-1 text-sm text-lamp">
+                    {plan.version} · {plan.kind}
+                  </p>
+                  <p className="mt-3 text-lg text-paper">{plan.finance}</p>
+                  <p className="mt-1 text-chrome">
+                    Cuota 1 {formatARS(plan.cuota1)} · desde{" "}
+                    {formatARS(plan.priceFrom)}
+                  </p>
+                  <ul className="mt-4 flex flex-wrap gap-x-5 gap-y-1 text-sm text-chrome">
+                    {plan.highlights.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                  <a
+                    href={plan.sourceUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-4 inline-block text-sm text-chrome underline-offset-4 hover:text-paper hover:underline"
+                  >
+                    Ficha oficial
+                  </a>
+                </div>
               </li>
             ))}
           </ul>

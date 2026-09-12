@@ -6,8 +6,9 @@ export function SiteFooter() {
         ni un concesionario oficial de General Motors.
       </p>
       <p className="mt-2">
-        Las cuotas, listas y disponibilidad las confirma el plan oficial. Acá
-        juntamos tu ficha y te devolvemos una orientación.
+        Precios y cuota 1 son una foto de la lista oficial al 1/9/2026. La
+        cuota vigente, los cupos y la firma las confirma el plan. Acá juntamos
+        tu ficha y te devolvemos una orientación.
       </p>
     </footer>
   );

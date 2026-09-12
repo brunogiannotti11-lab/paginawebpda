@@ -6,7 +6,7 @@ No es el sitio oficial de Chevrolet ni de un concesionario GM. Es un captador in
 
 ## Qué incluye
 
-- Landing estática con catálogo de planes: Onix, Tracker, Cruze, Montana, S10 y Spin
+- Landing estática con el catálogo vigente de Plan Chevrolet: Onix, Onix Plus, Tracker, Montana y S10 (fotos y cuota 1 referencial al 1/9/2026)
 - Formulario: nombre completo, email y select de plan
 - Panel `/admin` con login (usuario y contraseña en variables de entorno)
 - Tabla de leads con búsqueda y filtro por plan

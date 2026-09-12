@@ -25,12 +25,15 @@ export const metadata: Metadata = {
     template: "%s | Ficha de Plan",
   },
   description:
-    "Asesoramiento independiente para planes de ahorro Chevrolet en Argentina. Dejá nombre, email y el modelo que te interesa: Onix, Tracker, Cruze, Montana, S10 o Spin.",
+    "Asesoramiento independiente para planes de ahorro Chevrolet en Argentina. Dejá nombre, email y el modelo que te interesa: Onix, Onix Plus, Tracker, Montana o S10.",
   keywords: [
     "planes de ahorro Chevrolet",
     "plan Chevrolet Argentina",
     "Onix plan de ahorro",
+    "Onix Plus plan de ahorro",
     "Tracker plan de ahorro",
+    "Montana plan de ahorro",
+    "S10 plan de ahorro",
     "ficha Chevrolet",
   ],
   openGraph: {

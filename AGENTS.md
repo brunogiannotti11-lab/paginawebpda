@@ -40,6 +40,7 @@ Skills instaladas desde [skills.sh](https://www.skills.sh/): `frontend-design` (
 - Landing `/` estática y liviana: poco JS, inputs nativos, `next/font`.
 - `/admin` es dinámico y `noindex`.
 - Copy en español argentino. Contenido real, no lorem.
+- El catálogo vive en `lib/plans.ts` y sale de Plan Chevrolet (fotos en `public/vehicles/`). No inventar modelos ni pegar el legal de GM.
 - Este sitio es independiente: no inventes endpoints, precios oficiales ni identidad de chevrolet.com.ar.
 - No agregues auth multi-usuario, CRM ni mails transaccionales salvo que lo pidan.
 

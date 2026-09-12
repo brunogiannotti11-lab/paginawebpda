@@ -87,7 +87,7 @@ export function LeadForm({ compact = false }: { compact?: boolean }) {
           </option>
           {PLANS.map((plan) => (
             <option key={plan.id} value={plan.id}>
-              {plan.name} — {plan.kind}
+              {plan.name} — {plan.version}
             </option>
           ))}
         </select>
