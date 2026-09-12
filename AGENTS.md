@@ -12,30 +12,32 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 Landing de captación de leads para planes de ahorro Chevrolet (Argentina) y un mostrador `/admin` para ver las fichas.
 
-## Skills (obligatorias)
+## Reglas del proyecto
 
-Antes de tocar UI, leé y seguí [`.cursor/skills/frontend-design/SKILL.md`](.cursor/skills/frontend-design/SKILL.md) (copia en [`.agents/skills/frontend-design/SKILL.md`](.agents/skills/frontend-design/SKILL.md)). Dirección visual: showroom de noche, asfalto + papel de solicitud, no dashboard SaaS.
-
-Antes de usar APIs de librerías (Next.js, Drizzle, Tailwind, Zod, shadcn), consultá Context7. No te bases solo en memoria de entrenamiento.
+1. Revisá el stack del repo (Next.js, TypeScript, Tailwind, npm) **antes** de meter código o una librería nueva.
+2. Package manager: **npm**. Preferí librerías conocidas y mantenidas. No yarn, no pnpm.
+3. Nunca hardcodear secretos ni credenciales en el repo. Van en variables de entorno (`.env`, no commiteado) o en el servidor. Ejemplo: `ADMIN_USER`, `ADMIN_PASSWORD`, `SESSION_SECRET`.
+4. Para crear o cambiar pantallas: **Tailwind** + skill `frontend-design` ([`.cursor/skills/frontend-design/SKILL.md`](.cursor/skills/frontend-design/SKILL.md)).
+5. Para docs al día de cualquier paquete: skill **Context7** (`npx ctx7@latest`), no memoria de entrenamiento.
+6. Ante un cambio de UI, leé [DESIGN.md](DESIGN.md) y respetá ese branding de punta a punta.
 
 ```bash
 npx ctx7@latest library "Next.js" "tu consulta"
 npx ctx7@latest docs /vercel/next.js "tu consulta"
 ```
 
-Skills instaladas desde [skills.sh](https://www.skills.sh/): `frontend-design` (anthropics/skills), `find-docs` y `context7-cli` (upstash/context7).
+Skills instaladas desde [skills.sh](https://www.skills.sh/): `frontend-design` (anthropics/skills), `find-docs` y `context7-cli` (upstash/context7). Copias en `.cursor/skills/` y `.agents/skills/`.
 
 ## Stack
 
 - Next.js App Router, TypeScript, Tailwind v4, shadcn/ui, npm
 - Leads en SQLite (`better-sqlite3` + Drizzle) en `data/leads.db`
-- Auth admin: `ADMIN_USER` + `ADMIN_PASSWORD` + cookie firmada (`jose`)
+- Auth admin: cookie firmada (`jose`) con credenciales leídas de `.env`
 - En Next.js 16+ el archivo de red es `proxy.ts`, no `middleware.ts`
 - `cookies()`, `headers()`, `params` y `searchParams` son async
 
 ## Convenciones
 
-- Package manager: npm. No yarn, no pnpm.
 - El formulario público muta con Server Actions en `app/actions/`.
 - Landing `/` estática y liviana: poco JS, inputs nativos, `next/font`.
 - `/admin` es dinámico y `noindex`.
@@ -52,4 +54,4 @@ cp .env.example .env
 npm run dev
 ```
 
-Admin local: usuario `admin`, contraseña `ficha-demo` (la de `.env.example`).
+Credenciales de admin: las de `.env` (plantilla en `.env.example`).
