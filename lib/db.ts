@@ -5,15 +5,21 @@ import { and, desc, eq, like, or } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/better-sqlite3";
 import { leads, type Lead } from "@/lib/schema";
 
-const dbFile = process.env.DATABASE_PATH ?? path.join(process.cwd(), "data", "leads.db");
-
-type AppDb = ReturnType<typeof createDb>;
+type AppDb = {
+  orm: ReturnType<typeof drizzle>;
+  sqlite: Database.Database;
+};
 
 const globalForDb = globalThis as unknown as { sqliteDb?: AppDb };
 
+function dbFile() {
+  return process.env.DATABASE_PATH ?? path.join(process.cwd(), "data", "leads.db");
+}
+
 function createDb() {
-  fs.mkdirSync(path.dirname(dbFile), { recursive: true });
-  const sqlite = new Database(dbFile);
+  const file = dbFile();
+  fs.mkdirSync(path.dirname(file), { recursive: true });
+  const sqlite = new Database(file);
   sqlite.pragma("journal_mode = WAL");
   sqlite.exec(`
     CREATE TABLE IF NOT EXISTS leads (
@@ -26,14 +32,19 @@ function createDb() {
     CREATE INDEX IF NOT EXISTS leads_created_at_idx ON leads (created_at);
     CREATE INDEX IF NOT EXISTS leads_plan_id_idx ON leads (plan_id);
   `);
-  return drizzle(sqlite, { schema: { leads } });
+  return { orm: drizzle(sqlite, { schema: { leads } }), sqlite };
 }
 
 export function getDb() {
   if (!globalForDb.sqliteDb) {
     globalForDb.sqliteDb = createDb();
   }
-  return globalForDb.sqliteDb;
+  return globalForDb.sqliteDb.orm;
+}
+
+export function closeDbForTests() {
+  globalForDb.sqliteDb?.sqlite.close();
+  globalForDb.sqliteDb = undefined;
 }
 
 export async function insertLead(input: {

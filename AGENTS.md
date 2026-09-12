@@ -20,6 +20,8 @@ Landing de captación de leads para planes de ahorro Chevrolet (Argentina) y un 
 4. Para crear o cambiar pantallas: **Tailwind** + skill `frontend-design` ([`.cursor/skills/frontend-design/SKILL.md`](.cursor/skills/frontend-design/SKILL.md)).
 5. Para docs al día de cualquier paquete: skill **Context7** (`npx ctx7@latest`), no memoria de entrenamiento.
 6. Ante un cambio de UI, leé [DESIGN.md](DESIGN.md) y respetá ese branding de punta a punta.
+7. Unitarias e integración: **Vitest** (`npm test`, `npm run test:unit`, `npm run test:integration`). e2e: **MCP de Playwright** ([`.cursor/mcp.json`](.cursor/mcp.json), flujos en [`tests/e2e/flows.md`](tests/e2e/flows.md)). No uses `@playwright/test`.
+8. Nunca des una tarea por terminada sin correr los tests completos: `npm test` y, si tocaste UI o flujos, los e2e del MCP.
 
 ```bash
 npx ctx7@latest library "Next.js" "tu consulta"
@@ -52,6 +54,9 @@ Skills instaladas desde [skills.sh](https://www.skills.sh/): `frontend-design` (
 npm install
 cp .env.example .env
 npm run dev
+npm test
 ```
+
+e2e: Cursor Settings → MCP, o el server de [`.cursor/mcp.json`](.cursor/mcp.json) (`npx @playwright/mcp@latest`). Checklist: [`tests/e2e/flows.md`](tests/e2e/flows.md).
 
 Credenciales de admin: las de `.env` (plantilla en `.env.example`).

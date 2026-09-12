@@ -27,6 +27,16 @@ npm run dev
 
 La app queda en [http://127.0.0.1:4317](http://127.0.0.1:4317).
 
+## Tests
+
+```bash
+npm test
+npm run test:unit
+npm run test:integration
+```
+
+Unitarias e integración van con Vitest. El e2e se corre con el [MCP de Playwright](https://github.com/microsoft/playwright-mcp) (config en `.cursor/mcp.json`, flujos en `tests/e2e/flows.md`) con el `npm run dev` levantado.
+
 ### Variables de entorno
 
 | Variable | Para qué |
