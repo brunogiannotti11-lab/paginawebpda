@@ -36,7 +36,7 @@ export default function HomePage() {
           <div className="relative grid items-start gap-12 lg:grid-cols-[minmax(0,1fr)_22rem]">
             <div className="max-w-2xl">
               <h1 className="text-5xl leading-[0.95] text-paper md:text-7xl">
-                Un auto. Una cuota. Sin el circo del patio.
+                Simple, rápido y accesible
               </h1>
               <p className="mt-6 max-w-xl text-lg leading-8 text-chrome">
                 Te armamos la ficha del plan Chevrolet que estás mirando. Onix,
