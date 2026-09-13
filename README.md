@@ -47,7 +47,7 @@ Unitarias e integración van con Vitest. El e2e se corre con el [MCP de Playwrig
 | `DATABASE_PATH` | Ruta del SQLite (por defecto `./data/leads.db`) |
 | `NEXT_PUBLIC_SITE_URL` | URL canónica para SEO (Open Graph, sitemap) |
 
-Valores de ejemplo en [`.env.example`](.env.example): usuario `admin`, contraseña `ficha-demo`.
+Copiá [`.env.example`](.env.example) a `.env` y cambiá usuario, contraseña y `SESSION_SECRET`. El `.env` no se sube a git.
 
 ### Panel admin
 

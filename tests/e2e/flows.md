@@ -21,7 +21,7 @@ Base: `http://127.0.0.1:4317`
 
 - Abrir `/admin` → tiene que ir a `/admin/login`
 - Login mal (usuario `admin`, clave `incorrecta`) → error, no entra
-- Login bien (credenciales de `.env`, en local `admin` / `ficha-demo`) → `/admin`
+- Login bien (las de `.env`) → `/admin`
 
 ## 4. La ficha aparece
 
