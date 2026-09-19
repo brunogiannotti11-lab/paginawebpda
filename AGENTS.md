@@ -33,7 +33,7 @@ Skills instaladas desde [skills.sh](https://www.skills.sh/): `frontend-design` (
 ## Stack
 
 - Next.js App Router, TypeScript, Tailwind v4, shadcn/ui, npm
-- Leads en SQLite (`better-sqlite3` + Drizzle) en `data/leads.db`
+- Leads en libSQL/Turso (`@libsql/client` + Drizzle). Local: `file:./data/leads.db`. Producción: URL + token de Turso
 - Auth admin: cookie firmada (`jose`) con credenciales leídas de `.env`
 - En Next.js 16+ el archivo de red es `proxy.ts`, no `middleware.ts`
 - `cookies()`, `headers()`, `params` y `searchParams` son async

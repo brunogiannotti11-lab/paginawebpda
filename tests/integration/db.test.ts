@@ -4,12 +4,13 @@ import path from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { closeDbForTests, insertLead, listLeads } from "@/lib/db";
 
-describe("leads sqlite", () => {
+describe("leads libsql", () => {
   let dir: string;
 
   beforeEach(() => {
     dir = fs.mkdtempSync(path.join(os.tmpdir(), "ficha-leads-"));
-    process.env.DATABASE_PATH = path.join(dir, "leads.db");
+    process.env.TURSO_DATABASE_URL = `file:${path.join(dir, "leads.db")}`;
+    delete process.env.TURSO_AUTH_TOKEN;
     closeDbForTests();
   });
 

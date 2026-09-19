@@ -1,27 +1,37 @@
 import fs from "node:fs";
 import path from "node:path";
-import Database from "better-sqlite3";
+import { createClient, type Client } from "@libsql/client";
 import { and, desc, eq, like, or } from "drizzle-orm";
-import { drizzle } from "drizzle-orm/better-sqlite3";
+import { drizzle } from "drizzle-orm/libsql";
 import { leads, type Lead } from "@/lib/schema";
 
 type AppDb = {
   orm: ReturnType<typeof drizzle>;
-  sqlite: Database.Database;
+  client: Client;
 };
 
-const globalForDb = globalThis as unknown as { fichaSqlite?: AppDb };
+const globalForDb = globalThis as unknown as { fichaLibsql?: AppDb };
 
-function dbFile() {
-  return process.env.DATABASE_PATH ?? path.join(process.cwd(), "data", "leads.db");
+function resolveDatabaseUrl() {
+  const url = process.env.TURSO_DATABASE_URL;
+  if (!url) {
+    throw new Error("Falta TURSO_DATABASE_URL");
+  }
+
+  if (url.startsWith("file:")) {
+    const raw = url.slice("file:".length);
+    const filePath = path.isAbsolute(raw)
+      ? raw
+      : path.join(/* turbopackIgnore: true */ process.cwd(), raw);
+    fs.mkdirSync(path.dirname(filePath), { recursive: true });
+    return `file:${filePath}`;
+  }
+
+  return url;
 }
 
-function createDb() {
-  const file = dbFile();
-  fs.mkdirSync(path.dirname(file), { recursive: true });
-  const sqlite = new Database(file);
-  sqlite.pragma("journal_mode = WAL");
-  sqlite.exec(`
+async function ensureSchema(client: Client) {
+  await client.executeMultiple(`
     CREATE TABLE IF NOT EXISTS leads (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       full_name TEXT NOT NULL,
@@ -32,23 +42,30 @@ function createDb() {
     CREATE INDEX IF NOT EXISTS leads_created_at_idx ON leads (created_at);
     CREATE INDEX IF NOT EXISTS leads_plan_id_idx ON leads (plan_id);
   `);
-  return { orm: drizzle(sqlite, { schema: { leads } }), sqlite };
 }
 
-export function getDb() {
-  if (!globalForDb.fichaSqlite?.sqlite) {
-    globalForDb.fichaSqlite = createDb();
+async function getDb() {
+  if (!globalForDb.fichaLibsql) {
+    const client = createClient({
+      url: resolveDatabaseUrl(),
+      authToken: process.env.TURSO_AUTH_TOKEN || undefined,
+    });
+    await ensureSchema(client);
+    globalForDb.fichaLibsql = {
+      orm: drizzle(client, { schema: { leads } }),
+      client,
+    };
   }
-  return globalForDb.fichaSqlite.orm;
+  return globalForDb.fichaLibsql.orm;
 }
 
 export function closeDbForTests() {
   try {
-    globalForDb.fichaSqlite?.sqlite.close();
+    globalForDb.fichaLibsql?.client.close();
   } catch {
     // already closed
   }
-  globalForDb.fichaSqlite = undefined;
+  globalForDb.fichaLibsql = undefined;
 }
 
 export async function insertLead(input: {
@@ -56,22 +73,20 @@ export async function insertLead(input: {
   email: string;
   planId: string;
 }) {
-  const db = getDb();
-  db.insert(leads)
-    .values({
-      fullName: input.fullName,
-      email: input.email,
-      planId: input.planId,
-      createdAt: Date.now(),
-    })
-    .run();
+  const db = await getDb();
+  await db.insert(leads).values({
+    fullName: input.fullName,
+    email: input.email,
+    planId: input.planId,
+    createdAt: Date.now(),
+  });
 }
 
 export async function listLeads(filters: {
   q?: string;
   planId?: string;
 }): Promise<Lead[]> {
-  const db = getDb();
+  const db = await getDb();
   const conditions = [];
 
   if (filters.planId) {

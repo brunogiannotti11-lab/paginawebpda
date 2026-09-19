@@ -18,7 +18,8 @@ describe("submitLead", () => {
 
   beforeEach(() => {
     dir = fs.mkdtempSync(path.join(os.tmpdir(), "ficha-action-"));
-    process.env.DATABASE_PATH = path.join(dir, "leads.db");
+    process.env.TURSO_DATABASE_URL = `file:${path.join(dir, "leads.db")}`;
+    delete process.env.TURSO_AUTH_TOKEN;
     closeDbForTests();
   });
 
